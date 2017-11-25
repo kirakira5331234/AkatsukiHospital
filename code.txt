@@ -1,0 +1,253 @@
+{\rtf1\ansi\ansicpg1258\deff0\nouicompat\deflang1066{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.15063}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;\par
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;\par
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';\par
+\par
+-- -----------------------------------------------------\par
+-- Schema mydb\par
+-- -----------------------------------------------------\par
+\par
+-- -----------------------------------------------------\par
+-- Schema mydb\par
+-- -----------------------------------------------------\par
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;\par
+USE `mydb` ;\par
+\par
+-- -----------------------------------------------------\par
+-- Table `mydb`.`THONGTINBAOHIEM`\par
+-- -----------------------------------------------------\par
+DROP TABLE IF EXISTS `mydb`.`THONGTINBAOHIEM` ;\par
+\par
+CREATE TABLE IF NOT EXISTS `mydb`.`THONGTINBAOHIEM` (\par
+  `MABH` VARCHAR(45) NOT NULL,\par
+  `NGAYBD` DATETIME NOT NULL,\par
+  `NGAYKT` DATETIME NOT NULL,\par
+  `MAHO` VARCHAR(45) NOT NULL,\par
+  `GIOITINH` VARCHAR(45) NOT NULL,\par
+  PRIMARY KEY (`MABH`))\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `mydb`.`THONGTINBENHNHAN`\par
+-- -----------------------------------------------------\par
+DROP TABLE IF EXISTS `mydb`.`THONGTINBENHNHAN` ;\par
+\par
+CREATE TABLE IF NOT EXISTS `mydb`.`THONGTINBENHNHAN` (\par
+  `MABH` VARCHAR(45) NOT NULL,\par
+  `TENBN` VARCHAR(150) NOT NULL,\par
+  `GIOITINH` VARCHAR(45) NOT NULL,\par
+  `DIACHI` VARCHAR(45) NOT NULL,\par
+  `SODT` VARCHAR(45) NOT NULL,\par
+  `MABENHAN` VARCHAR(45) NOT NULL,\par
+  `MAHO` VARCHAR(45) NOT NULL,\par
+  `MABN` VARCHAR(45) NOT NULL,\par
+  `CMND` VARCHAR(45) NOT NULL,\par
+  PRIMARY KEY (`MABH`, `MABN`, `CMND`),\par
+  CONSTRAINT `MABH`\par
+    FOREIGN KEY (`MABH`)\par
+    REFERENCES `mydb`.`THONGTINBAOHIEM` (`MABH`)\par
+    ON DELETE NO ACTION\par
+    ON UPDATE NO ACTION)\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `mydb`.`THUOC`\par
+-- -----------------------------------------------------\par
+DROP TABLE IF EXISTS `mydb`.`THUOC` ;\par
+\par
+CREATE TABLE IF NOT EXISTS `mydb`.`THUOC` (\par
+  `MATHUOC` VARCHAR(45) NOT NULL,\par
+  `TENTHUOC` VARCHAR(150) NOT NULL,\par
+  `CACHDUNG` VARCHAR(45) NOT NULL,\par
+  `THOIGIANSD` VARCHAR(150) NOT NULL,\par
+  PRIMARY KEY (`MATHUOC`))\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `mydb`.`CHITIETDONTHUOC`\par
+-- -----------------------------------------------------\par
+DROP TABLE IF EXISTS `mydb`.`CHITIETDONTHUOC` ;\par
+\par
+CREATE TABLE IF NOT EXISTS `mydb`.`CHITIETDONTHUOC` (\par
+  `MADONT` VARCHAR(45) NOT NULL,\par
+  `MATHUOC` VARCHAR(45) NOT NULL,\par
+  `SOLUONG` TINYINT(6) NOT NULL,\par
+  PRIMARY KEY (`MADONT`),\par
+  INDEX `MATHUOC_idx` (`MATHUOC` ASC),\par
+  CONSTRAINT `MATHUOC`\par
+    FOREIGN KEY (`MATHUOC`)\par
+    REFERENCES `mydb`.`THUOC` (`MATHUOC`)\par
+    ON DELETE NO ACTION\par
+    ON UPDATE NO ACTION)\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `mydb`.`SOTHUTU`\par
+-- -----------------------------------------------------\par
+DROP TABLE IF EXISTS `mydb`.`SOTHUTU` ;\par
+\par
+CREATE TABLE IF NOT EXISTS `mydb`.`SOTHUTU` (\par
+  `STT` INT NOT NULL,\par
+  `MABH` VARCHAR(45) NOT NULL,\par
+  `NGAYLAP` TIMESTAMP(2032) NOT NULL,\par
+  PRIMARY KEY (`STT`, `NGAYLAP`),\par
+  INDEX `MABH_idx` (`MABH` ASC),\par
+  CONSTRAINT `MABH`\par
+    FOREIGN KEY (`MABH`)\par
+    REFERENCES `mydb`.`THONGTINBENHNHAN` (`MABH`)\par
+    ON DELETE NO ACTION\par
+    ON UPDATE NO ACTION)\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `mydb`.`BENH`\par
+-- -----------------------------------------------------\par
+DROP TABLE IF EXISTS `mydb`.`BENH` ;\par
+\par
+CREATE TABLE IF NOT EXISTS `mydb`.`BENH` (\par
+  `MABENH` VARCHAR(45) NOT NULL,\par
+  `TENBENH` VARCHAR(150) NOT NULL,\par
+  `TRIEUCHUNG` VARCHAR(150) NOT NULL,\par
+  PRIMARY KEY (`MABENH`))\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `mydb`.`PHONGKHAM`\par
+-- -----------------------------------------------------\par
+DROP TABLE IF EXISTS `mydb`.`PHONGKHAM` ;\par
+\par
+CREATE TABLE IF NOT EXISTS `mydb`.`PHONGKHAM` (\par
+  `MAPK` VARCHAR(45) NOT NULL,\par
+  `CHUYENKHOA` VARCHAR(150) NOT NULL,\par
+  `MABS` VARCHAR(45) NOT NULL,\par
+  PRIMARY KEY (`MAPK`),\par
+  INDEX `MABS_idx` (`MABS` ASC),\par
+  CONSTRAINT `MABS`\par
+    FOREIGN KEY (`MABS`)\par
+    REFERENCES `mydb`.`BACSI` (`MABS`)\par
+    ON DELETE NO ACTION\par
+    ON UPDATE NO ACTION)\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `mydb`.`BACSI`\par
+-- -----------------------------------------------------\par
+DROP TABLE IF EXISTS `mydb`.`BACSI` ;\par
+\par
+CREATE TABLE IF NOT EXISTS `mydb`.`BACSI` (\par
+  `MABS` VARCHAR(45) NOT NULL,\par
+  `TENBACSI` VARCHAR(150) NOT NULL,\par
+  `TUOI` INT NOT NULL,\par
+  `MAPK` VARCHAR(45) NOT NULL,\par
+  `VITRI` VARCHAR(150) NOT NULL,\par
+  PRIMARY KEY (`MABS`),\par
+  INDEX `MAPK_idx` (`MAPK` ASC),\par
+  CONSTRAINT `MAPK`\par
+    FOREIGN KEY (`MAPK`)\par
+    REFERENCES `mydb`.`PHONGKHAM` (`MAPK`)\par
+    ON DELETE NO ACTION\par
+    ON UPDATE NO ACTION)\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `mydb`.`BENHAN`\par
+-- -----------------------------------------------------\par
+DROP TABLE IF EXISTS `mydb`.`BENHAN` ;\par
+\par
+CREATE TABLE IF NOT EXISTS `mydb`.`BENHAN` (\par
+  `MABENHAN` VARCHAR(45) NOT NULL,\par
+  `MABENH` VARCHAR(45) NOT NULL,\par
+  `MADONT` VARCHAR(45) NOT NULL,\par
+  `NGAYLAP` DATETIME NOT NULL,\par
+  `MABS` VARCHAR(45) NOT NULL,\par
+  `MAPK` VARCHAR(45) NOT NULL,\par
+  PRIMARY KEY (`MABENHAN`),\par
+  INDEX `MADONT_idx` (`MADONT` ASC),\par
+  INDEX `NGAYLAP_idx` (`NGAYLAP` ASC),\par
+  INDEX `MABENH_idx` (`MABENH` ASC),\par
+  INDEX `MABS_idx` (`MABS` ASC),\par
+  INDEX `MAPK_idx` (`MAPK` ASC),\par
+  CONSTRAINT `MADONT`\par
+    FOREIGN KEY (`MADONT`)\par
+    REFERENCES `mydb`.`CHITIETDONTHUOC` (`MADONT`)\par
+    ON DELETE NO ACTION\par
+    ON UPDATE NO ACTION,\par
+  CONSTRAINT `NGAYLAP`\par
+    FOREIGN KEY (`NGAYLAP`)\par
+    REFERENCES `mydb`.`SOTHUTU` (`NGAYLAP`)\par
+    ON DELETE NO ACTION\par
+    ON UPDATE NO ACTION,\par
+  CONSTRAINT `MABENH`\par
+    FOREIGN KEY (`MABENH`)\par
+    REFERENCES `mydb`.`BENH` (`MABENH`)\par
+    ON DELETE NO ACTION\par
+    ON UPDATE NO ACTION,\par
+  CONSTRAINT `MABS`\par
+    FOREIGN KEY (`MABS`)\par
+    REFERENCES `mydb`.`BACSI` (`MABS`)\par
+    ON DELETE NO ACTION\par
+    ON UPDATE NO ACTION,\par
+  CONSTRAINT `MAPK`\par
+    FOREIGN KEY (`MAPK`)\par
+    REFERENCES `mydb`.`PHONGKHAM` (`MAPK`)\par
+    ON DELETE NO ACTION\par
+    ON UPDATE NO ACTION)\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `mydb`.`CHITIETBENHAN`\par
+-- -----------------------------------------------------\par
+DROP TABLE IF EXISTS `mydb`.`CHITIETBENHAN` ;\par
+\par
+CREATE TABLE IF NOT EXISTS `mydb`.`CHITIETBENHAN` (\par
+  `MABENHAN` VARCHAR(45) NOT NULL,\par
+  `MABN` VARCHAR(45) NOT NULL,\par
+  PRIMARY KEY (`MABENHAN`, `MABN`),\par
+  INDEX `MABN_idx` (`MABN` ASC),\par
+  CONSTRAINT `MABN`\par
+    FOREIGN KEY (`MABN`)\par
+    REFERENCES `mydb`.`THONGTINBENHNHAN` (`MABN`)\par
+    ON DELETE NO ACTION\par
+    ON UPDATE NO ACTION,\par
+  CONSTRAINT `MABENHAN`\par
+    FOREIGN KEY (`MABENHAN`)\par
+    REFERENCES `mydb`.`BENHAN` (`MABENHAN`)\par
+    ON DELETE NO ACTION\par
+    ON UPDATE NO ACTION)\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `mydb`.`GIADINH`\par
+-- -----------------------------------------------------\par
+DROP TABLE IF EXISTS `mydb`.`GIADINH` ;\par
+\par
+CREATE TABLE IF NOT EXISTS `mydb`.`GIADINH` (\par
+  `MAHO` VARCHAR(45) NOT NULL,\par
+  `MABH` VARCHAR(45) NOT NULL,\par
+  `MANT` VARCHAR(45) NOT NULL,\par
+  PRIMARY KEY (`MAHO`, `MABH`),\par
+  INDEX `MABH_idx` (`MABH` ASC),\par
+  CONSTRAINT `MABH`\par
+    FOREIGN KEY (`MABH`)\par
+    REFERENCES `mydb`.`THONGTINBENHNHAN` (`MABH`)\par
+    ON DELETE NO ACTION\par
+    ON UPDATE NO ACTION)\par
+ENGINE = InnoDB;\par
+\par
+\par
+SET SQL_MODE=@OLD_SQL_MODE;\par
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;\par
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;\par
+}
+ 
