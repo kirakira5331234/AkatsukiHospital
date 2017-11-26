@@ -32,15 +32,21 @@ public class MedicalF extends javax.swing.JFrame {
     static final String PASS = "123456";
     static Connection conn = null;
     static Statement stmt = null;
-    static ResultSet rs;
+    static ResultSet rs,rs1;
     static PreparedStatement pstmt = null;
     
     int tam;
     int gov;
     int benhan;
+    int mabenhan;
+    int madonthuoc;
+    String UIDSearch = null,MABH,HOTEN,DIACHI,NGAYSINH,GIOITINH,MABN = null,
+            TGTN,NGAYKHAM,MABENH,TENBENH;
     public MedicalF() {
         tam=0;
         benhan=0;
+        mabenhan=0;
+        madonthuoc=0;
         initComponents();
         
     }
@@ -56,7 +62,7 @@ public class MedicalF extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        TextMaPK = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         TextTenBS = new javax.swing.JTextField();
@@ -64,6 +70,8 @@ public class MedicalF extends javax.swing.JFrame {
         TextChucvuBS = new javax.swing.JTextField();
         jLabel33 = new javax.swing.JLabel();
         TextTuoiBS = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        TextMaBS = new javax.swing.JTextField();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -121,9 +129,11 @@ public class MedicalF extends javax.swing.JFrame {
         TextChanDoan = new javax.swing.JTextArea();
         jLabel26 = new javax.swing.JLabel();
         CbPPGQ = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        CbMaBenh = new javax.swing.JComboBox<>();
         jPanel9 = new javax.swing.JPanel();
         BtToaThuoc = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        BtLuuHoSo = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         JtBenhAn = new javax.swing.JTable();
@@ -137,10 +147,10 @@ public class MedicalF extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Phòng số");
 
-        jTextField1.setEditable(false);
-        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField1.setText("23");
+        TextMaPK.setEditable(false);
+        TextMaPK.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        TextMaPK.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        TextMaPK.setText("23");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -150,14 +160,14 @@ public class MedicalF extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(TextMaPK, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                .addComponent(TextMaPK)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(36, 36, 36)
@@ -188,25 +198,36 @@ public class MedicalF extends javax.swing.JFrame {
         TextTuoiBS.setEditable(false);
         TextTuoiBS.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        jLabel13.setText("Mã BS");
+
+        TextMaBS.setText("T12");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                        .addContainerGap()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(TextTenBS, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel32)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TextChucvuBS, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(52, 52, 52)
+                                .addComponent(jLabel33)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TextTuoiBS))))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(115, 115, 115)
+                        .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(TextTenBS, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel32)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TextChucvuBS, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(52, 52, 52)
-                        .addComponent(jLabel33)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TextTuoiBS)))
+                        .addComponent(TextMaBS, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -225,7 +246,11 @@ public class MedicalF extends javax.swing.JFrame {
                     .addComponent(jLabel32)
                     .addComponent(jLabel33)
                     .addComponent(TextTuoiBS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TextMaBS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13))
+                .addContainerGap())
         );
 
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.RIGHT);
@@ -554,6 +579,15 @@ public class MedicalF extends javax.swing.JFrame {
 
         CbPPGQ.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ra toa", "Chuyển viện", "Tiểu phẩu" }));
 
+        jLabel6.setText("Mã bệnh");
+
+        CbMaBenh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TIM1", "VU1", "VU2", "HO1", "HO2", " " }));
+        CbMaBenh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CbMaBenhActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -565,9 +599,21 @@ public class MedicalF extends javax.swing.JFrame {
                             .addComponent(jLabel25)
                             .addComponent(jLabel24))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1)))
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel8Layout.createSequentialGroup()
+                                        .addGap(101, 101, 101)
+                                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel6)
+                                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                                .addComponent(jLabel26)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(CbPPGQ, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(CbMaBenh, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(4, 4, 4)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -595,12 +641,7 @@ public class MedicalF extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(TextNhipTho, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel21))))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(176, 176, 176)
-                        .addComponent(jLabel26)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(CbPPGQ, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel21)))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
@@ -627,7 +668,11 @@ public class MedicalF extends javax.swing.JFrame {
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel6)
+                                .addComponent(CbMaBenh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jLabel24)
                         .addGap(47, 47, 47)
@@ -664,12 +709,12 @@ public class MedicalF extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jButton1.setBackground(new java.awt.Color(0, 0, 255));
-        jButton1.setForeground(new java.awt.Color(255, 255, 0));
-        jButton1.setText("Lưu hồ sơ bệnh");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        BtLuuHoSo.setBackground(new java.awt.Color(0, 0, 255));
+        BtLuuHoSo.setForeground(new java.awt.Color(255, 255, 0));
+        BtLuuHoSo.setText("Lưu hồ sơ bệnh");
+        BtLuuHoSo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                BtLuuHoSoActionPerformed(evt);
             }
         });
 
@@ -682,7 +727,7 @@ public class MedicalF extends javax.swing.JFrame {
             .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(193, 193, 193)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BtLuuHoSo, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -694,7 +739,7 @@ public class MedicalF extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                .addComponent(BtLuuHoSo, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -726,7 +771,7 @@ public class MedicalF extends javax.swing.JFrame {
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Tiền sử bệnh án", jPanel10);
@@ -769,23 +814,16 @@ public class MedicalF extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 587, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void BtToaThuocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtToaThuocActionPerformed
-        // TODO add your handling code here:
-        ToaThuoc = new ToaThuoc();
-        ToaThuoc.setVisible(true);
-    }//GEN-LAST:event_BtToaThuocActionPerformed
 
     private void TextTenBSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextTenBSActionPerformed
         // TODO add your handling code here:
@@ -796,15 +834,29 @@ public class MedicalF extends javax.swing.JFrame {
         int temp;
         DefaultTableModel model = (DefaultTableModel)JtBenhAn.getModel();
         
-        ArrayList<String> benhan = new ArrayList<String>();
+        ArrayList<String> benhancu = new ArrayList<String>();
         String sql = "SELECT * FROM tam";
         String sql1= "SELECT * FROM gov WHERE UID = ?";
-        String sql2= "SELECT * FROM benhan WHERE MABN = ?";
+        String sql2= "SELECT * FROM benhan WHERE MABN =?";
         String sql3= "SELECT * FROM benh WHERE MABENH = ?";
-        String UIDSearch = null,MABH,HOTEN,DIACHI,NGAYSINH,GIOITINH,MABN = null,NGAYKHAM,MABENH,TENBENH;
+        String sql4= "SELECT * FROM bacsi WHERE MABS = ?";
+        String sql5= "INSERT INTO bacsi VALUES(?,?,?,?,?)";
         try{
             tam++;
-            conn = DriverManager.getConnection(DB_Chi,USER,PASS);
+            conn = DriverManager.getConnection(DB_Son_Hackathon,USER,PASS);
+            
+            
+            pstmt = conn.prepareStatement(sql4);
+            pstmt.setString(1, TextMaBS.getText());
+            rs = pstmt.executeQuery();
+            if(rs.absolute(1))
+            {
+                TextTenBS.setText(rs.getString("TENBACSI"));
+                TextChucvuBS.setText(rs.getString("VITRI"));
+                TextTuoiBS.setText(String.valueOf(rs.getInt("TUOI")));
+                TextMaPK.setText(rs.getString("MAPK"));
+            }
+            
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
             rs.absolute(tam);
@@ -818,7 +870,8 @@ public class MedicalF extends javax.swing.JFrame {
             }
             TextMaBH.setText(String.valueOf(rs.getInt("STT")));
             UIDSearch = rs.getString("UID");
-            TextTGTN.setText(rs.getString("Ngay"));
+            TGTN = rs.getString("Ngay");
+            TextTGTN.setText(TGTN);
    
             
             
@@ -842,45 +895,64 @@ public class MedicalF extends javax.swing.JFrame {
                 TextGioiTinh1.setText(rs.getString("GIOITINH"));
             } 
             
-            
             pstmt = conn.prepareStatement(sql2);
-            pstmt.setString(1, MABN);
+            pstmt.setString(1,MABN);
             rs = pstmt.executeQuery();
-            while (rs.next())
-            { 
-                NGAYKHAM = rs.getString("NGAYLAP");
-                MABENH = rs.getString("MABENH");
-            
+            while(rs.next())
+            {
                 pstmt = conn.prepareStatement(sql3);
-                pstmt.setString(1, MABENH);
-                rs = pstmt.executeQuery();
-                if (rs.absolute(1))
+                pstmt.setString(1, rs.getString("MABENH"));
+                rs1 = pstmt.executeQuery();
+                if (rs1.absolute(1))
                 {
-                    TENBENH = rs.getString("TENBENH");
+                    benhancu.add(0,rs.getString(TGTN));
+                    benhancu.add(1,rs1.getString("TENBENH"));
                 }
-                benhan.add(0,NGAYKHAM);
-                benhan.add(1,MABENH);
-                model.addRow(benhan.toArray());
-            } 
+                model.addRow(benhancu.toArray());
+            }
+            
+            
+            
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_BtKeTiepActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String sql4 = "INSERT INTO benh VALUES (?,?,?)";
+    private void BtLuuHoSoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtLuuHoSoActionPerformed
+        madonthuoc = 1;
+        mabenhan = 1;
+        String sql4 = "INSERT INTO benhan VALUES (?,?,?,?,?,?,?)";
         try
         {
-            conn = DriverManager.getConnection(DB_Chi,USER,PASS);
+            conn = DriverManager.getConnection(DB_Son_Hackathon,USER,PASS);
             pstmt = conn.prepareStatement(sql4);
-            pstmt.setString(2, TextChanDoan.getText());
-            pstmt.setString(3, TextTrieuChung.getText());
-            pstmt.executeUpdate();
             
+            pstmt.setString(1, String.valueOf(mabenhan));
+            pstmt.setString(2, CbMaBenh.getSelectedItem().toString());
+            pstmt.setString(3, String.valueOf(madonthuoc));
+            pstmt.setString(4, TGTN);
+            pstmt.setString(5, TextMaBS.getText());
+            pstmt.setString(6, MABN);
+            pstmt.setString(7, TextTrieuChung.getText());
+            
+   
+            
+            pstmt.executeUpdate();
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_BtLuuHoSoActionPerformed
+
+    private void BtToaThuocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtToaThuocActionPerformed
+        // TODO add your handling code here:
+        ToaThuoc = new ToaThuoc();
+        ToaThuoc.setVisible(true);
+    }//GEN-LAST:event_BtToaThuocActionPerformed
+
+    private void CbMaBenhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbMaBenhActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CbMaBenhActionPerformed
 
     /**
      * @param args the command line arguments
@@ -893,7 +965,9 @@ public class MedicalF extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtKeTiep;
+    private javax.swing.JButton BtLuuHoSo;
     private javax.swing.JButton BtToaThuoc;
+    private javax.swing.JComboBox<String> CbMaBenh;
     private javax.swing.JComboBox<String> CbPPGQ;
     private javax.swing.JTable JtBenhAn;
     private javax.swing.JTextArea TextChanDoan;
@@ -909,6 +983,8 @@ public class MedicalF extends javax.swing.JFrame {
     private javax.swing.JTextField TextMaBH;
     private javax.swing.JTextField TextMaBN;
     private javax.swing.JTextField TextMaBN1;
+    private javax.swing.JTextField TextMaBS;
+    private javax.swing.JTextField TextMaPK;
     private javax.swing.JTextField TextMachDap;
     private javax.swing.JTextField TextNgayBD;
     private javax.swing.JTextField TextNgayKT;
@@ -920,11 +996,11 @@ public class MedicalF extends javax.swing.JFrame {
     private javax.swing.JTextField TextTenBS;
     private javax.swing.JTextArea TextTrieuChung;
     private javax.swing.JTextField TextTuoiBS;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -948,6 +1024,7 @@ public class MedicalF extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -966,6 +1043,5 @@ public class MedicalF extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
