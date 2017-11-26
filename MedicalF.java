@@ -42,6 +42,7 @@ public class MedicalF extends javax.swing.JFrame {
     int madonthuoc;
     String UIDSearch = null,MABH,HOTEN,DIACHI,NGAYSINH,GIOITINH,MABN = null,
             TGTN,NGAYKHAM,MABENH,TENBENH;
+    int STT;
     public MedicalF() {
         tam=0;
         benhan=0;
@@ -841,6 +842,7 @@ public class MedicalF extends javax.swing.JFrame {
         String sql3= "SELECT * FROM benh WHERE MABENH = ?";
         String sql4= "SELECT * FROM bacsi WHERE MABS = ?";
         String sql5= "INSERT INTO bacsi VALUES(?,?,?,?,?)";
+        String sql6= "INSERT INTO thongtinbenhnhan VALUES(?,?,?,?,?,?,?,?,?)";
         try{
             tam++;
             conn = DriverManager.getConnection(DB_Son_Hackathon,USER,PASS);
@@ -878,10 +880,11 @@ public class MedicalF extends javax.swing.JFrame {
             pstmt = conn.prepareStatement(sql1);
             pstmt.setString(1,UIDSearch);
             rs = pstmt.executeQuery();
-            rs.absolute(1);
+            rs.absolute(2);
             if(rs != null)
             {
                 MABN = rs.getString("MABN");
+                STT = rs.getInt("STT");
                 TextMaBN.setText(rs.getString("MABN"));
                 TextMaBN1.setText(rs.getString("MABN"));
                 TextMaBH.setText(rs.getString("MABH"));
@@ -894,6 +897,18 @@ public class MedicalF extends javax.swing.JFrame {
                 TextGioiTinh.setText(rs.getString("GIOITINH"));
                 TextGioiTinh1.setText(rs.getString("GIOITINH"));
             } 
+            
+             pstmt = conn.prepareStatement(sql6);
+             pstmt.setInt(1, STT);
+             pstmt.setString(2,MABH);
+             pstmt.setString(3,MABN);
+             pstmt.setString(4,"QTC");
+             pstmt.setString(5,HOTEN);
+             pstmt.setString(6,GIOITINH);
+             pstmt.setString(7,DIACHI);
+             pstmt.setString(8,"01285159527");
+             pstmt.setString(9,NGAYSINH);
+             pstmt.executeUpdate();
             
             pstmt = conn.prepareStatement(sql2);
             pstmt.setString(1,MABN);
